@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 
 #define ZIP_FILE "Clues.zip"
-#define ZIP_URL "https://drive.google.com/uc?export=download&id=1xFn1OBJUuSdnApDseEczKhtNzyGekauK"  // Ganti ini
+#define ZIP_URL "https://drive.google.com/uc?export=download&id=1xFn1OBJUuSdnApDseEczKhtNzyGekauK"  
 
 int is_valid_file(const char *filename) {
     return strlen(filename) == 5 && isalnum(filename[0]) && strcmp(filename + 1, ".txt") == 0;
