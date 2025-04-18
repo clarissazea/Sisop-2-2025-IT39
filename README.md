@@ -11,10 +11,10 @@ Soal ini diminta membuat sebuah program C bernama `action.c` yang berfungsi untu
 
 Program `action.c` terdiri atas beberapa perintah utama:
 
-- `./action` → Mengunduh dan mengekstrak Clues.zip ke dalam folder Clues.
+- `./action` → Mengunduh dan mengekstrak `Clues.zip` ke dalam folder Clues.
 - `./action -m Filter` → Memfilter file valid ke dalam folder Filtered.
-- `./action -m Combine` → Menggabungkan isi file ke dalam Combined.txt.
-- `./action -m Decode` → Mendekode isi Combined.txt dengan ROT13 ke Decoded.txt.
+- `./action -m Combine` → Menggabungkan isi file ke dalam `Combined.txt`.
+- `./action -m Decode` → Mendekode isi `Combined.txt` dengan ROT13 ke `Decoded.txt`.
 
 Sementara file Clues.zip berisi beberapa folder (ClueA–ClueD) yang masing-masing berisi banyak file clue.
 
