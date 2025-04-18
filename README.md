@@ -711,7 +711,7 @@ void write_log(const char *msg) {
 Code ini difokuskan untuk mencatat log.  
 Format log sesuai dengan instruksi soal.  
 
-##Dokumentasi  
+## Dokumentasi  
 ![Image](https://github.com/user-attachments/assets/54470956-ff43-4be6-8f0b-6391be147ec9)
 ![Image](https://github.com/user-attachments/assets/85eee659-b5d6-4435-859c-b65d72645152)
 ![Image](https://github.com/user-attachments/assets/77775d95-e41a-4206-80fb-46345392341f)
