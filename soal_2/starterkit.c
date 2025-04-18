@@ -294,9 +294,9 @@ int main(int argc, char *argv[]) {
         decrypt_files();
         run_daemon();
     } else if (strcmp(argv[1], "--quarantine") == 0) {
+        move_to_quarantine();
         decrypt_files();
         run_daemon();
-        move_to_quarantine();
     } else if (strcmp(argv[1], "--return") == 0) {
         return_from_quarantine();
     } else if (strcmp(argv[1], "--eradicate") == 0) {
