@@ -7,7 +7,7 @@
 # SOAL 1
 Dikerjakan oleh Clarissa Aydin Rahmazea (5027241014)   
 
-Soal ini diminta membuat sebuah program C bernama action.c yang berfungsi untuk mengelola file-file petunjuk (clue) dari sebuah arsip Clues.zip. Program ini harus mampu mengunduh file zip dari link, mengekstraknya, kemudian memfilter file-file teks yang hanya memiliki satu karakter alfanumerik sebagai nama (diikuti dengan .txt) dan memindahkannya ke folder Filtered/. Setelah itu, program harus menggabungkan isi file-file tersebut secara bergantian antara file yang bernama angka dan huruf ke dalam satu file baru bernama Combined.txt, lalu melakukan dekripsi terhadap isi file tersebut menggunakan metode ROT13 dan menyimpannya ke dalam file Decoded.txt. 
+Soal ini diminta membuat sebuah program C bernama <!-- action.c -->action.c yang berfungsi untuk mengelola file-file petunjuk (clue) dari sebuah arsip Clues.zip. Program ini harus mampu mengunduh file zip dari link, mengekstraknya, kemudian memfilter file-file teks yang hanya memiliki satu karakter alfanumerik sebagai nama (diikuti dengan .txt) dan memindahkannya ke folder Filtered/. Setelah itu, program harus menggabungkan isi file-file tersebut secara bergantian antara file yang bernama angka dan huruf ke dalam satu file baru bernama Combined.txt, lalu melakukan dekripsi terhadap isi file tersebut menggunakan metode ROT13 dan menyimpannya ke dalam file Decoded.txt. 
 
 Program action.c terdiri atas beberapa perintah utama:
 
