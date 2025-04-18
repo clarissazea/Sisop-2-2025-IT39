@@ -136,6 +136,10 @@ Penjelasan:
 - File yang valid dipindahkan ke `Filtered/`.
 - Sedankan file yang tidak valid dihapus.
 
+### Struktur directory setelah Filter:
+![image](https://github.com/user-attachments/assets/66dc1578-980a-4637-8cbf-17059aee3224)
+
+
 ### c. Combine the File Content
 Menggabungkan isi file di folder Filtered/ ke dalam satu file Combined.txt dengan urutan angka → huruf → angka → huruf secara bergantian.
 
@@ -220,6 +224,9 @@ Penjelasan:
 - Menggabungkan isi file angka lalu huruf secara bergantian ke `Combined.txt`.
 - Setelah isi file digabungkan, file aslinya dihapus.
 
+### Struktur directory setelah Combine:
+![image](https://github.com/user-attachments/assets/9e33e7d6-14f5-4b5a-bbc0-790fd92d8547)
+
 ### d. Decode the file
 Mendekripsi isi Combined.txt menggunakan metode ROT13 dan menyimpan hasilnya di `Decoded.txt`.
 
@@ -256,6 +263,10 @@ Penjelasan:
 - Membaca satu karakter per satu karakter
 - Jika huruf, digeser 13 huruf di alfabet (a-z, A-Z)
 - Output hasil dekripsi ditulis ke `Decoded.txt`
+
+### Struktur directory setelah Decoded:
+![image](https://github.com/user-attachments/assets/572d4552-a50c-4b4f-914d-44662e6890a9)
+
 
 ### Main Function
 Mengatur jalannya program berdasarkan argumen yang diberikan saat eksekusi.
@@ -305,7 +316,11 @@ Penjelasan:
 Selain itu, tampilkan panduan penggunaan.
 
 ### e. Password Check
-Output dari proses Decode = `BewareOfAmpy`. Kemudian masukkan ke web checker:
+Output dari proses Decode = `BewareOfAmpy`
+![image](https://github.com/user-attachments/assets/f5717fc7-01f2-4578-988f-d62929203df9)
+
+
+Kemudian masukkan ke web checker:
 
 ![Screenshot 2025-04-11 001813](https://github.com/user-attachments/assets/ff6830b4-3950-4301-9b33-4a0afb6b2265)
 
