@@ -338,7 +338,7 @@ Pengerjaan soal ini menggunakan 1 file script starterkit.c dan 1 file starter_ki
 Sementara file starter_kit.zip tersebut terdiri dari 27 file termasuk virus
 
 ## Cara Pengerjaan  
-a. Download & Unzip Starter Kit
+### a. Download & Unzip Starter Kit
 ## C
 ```bash
 void download_zip() {
@@ -427,7 +427,7 @@ Pada kode tersebut intinya adalah,
 2. File di-unzip ke dalam folder starter_kit.  
 3. File ZIP asli dihapus setelah unzip.  
 
-b. Decrypt Nama File Base64 ke Asli (Daemon Process)  
+### b. Decrypt Nama File Base64 ke Asli (Daemon Process)  
 ## C
 ```bash
 char *decode_base64(const char *input) {
@@ -577,7 +577,7 @@ Pada kode ini,
 2. Dekripsi menggunakan fungsi decode_base64().  
 3. PID disimpan ke decryption.pid.
 
-d. Hapus File dalam Karantina (Eradicate)  
+### d. Hapus File dalam Karantina (Eradicate)  
 ## C
 ```bash
 void erase_quarantine() {
@@ -608,7 +608,7 @@ int main(){
 Kode ini berisi Fungsi rename() digunakan untuk memindahkan file antar folder.  
 Log ditulis ke activity.log.
 
-e. Shutdown Daemon berdasarkan PID
+### e. Shutdown Daemon berdasarkan PID
 ## C
 ```bash
 void shutdown_daemon() {
@@ -640,7 +640,7 @@ PID dibaca dari file.
 Proses dihentikan dengan kill().  
 Log ditulis sesuai format.  
 
-f. Error Handling Sederhana  
+### f. Error Handling Sederhana  
 ## C
 ```bash
 int main(int argc, char *argv[]) {
@@ -671,7 +671,7 @@ if (argc == 1) {
 ```  
 Pesan kesalahan ditampilkan jika pengguna salah mengetikkan argumen.  
 
-g. Logging ke activity.log  
+### g. Logging ke activity.log  
 ## C
 ```bash
 void write_log(const char *msg) {
