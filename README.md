@@ -781,3 +781,183 @@ strncpy(argv[0], "/init", strlen(argv[0]));
 # Soal_4
 Dikerjakan oleh Ahmad Wildan Fawwaz (5027241001)  
 
+Pada soal ini, kita diminta untuk membuat program debugmon. Dimana debugmon sendiri adalah alat pemantau aktivitas di komputer.
+argumentasi yang digunakan dalam soal ini diantaranya:  
+./debugmon list <user>  
+./debugmon daemon <user>  
+./debugmon stop <user>  
+./debugmon fail <user>  
+./debugmon revert <user>  
+
+## Cara pengerjaan  
+
+## a. Mengetahui semua aktivitas user  
+Doraemon ingin melihat apa saja yang sedang dijalankan user di komputernya. Maka, dia mengetik:
+./debugmon list <user>
+Debugmon langsung menampilkan daftar semua proses yang sedang berjalan pada user tersebut beserta PID, command, CPU usage, dan memory usage.
+## C  
+```bash
+void list_processes(const char* user) {
+    char command[1024];
+    snprintf(command, sizeof(command),
+        "ps -u %s -o pid=,comm=,%%cpu=,%%mem=,rss= --sort=-%%cpu | "
+        "awk 'BEGIN { "
+        "printf \"%%-10s %%20s %%10s %%10s %%12s\\n\", \"PID\", \"COMMAND\", \"%%CPU\", \"%%MEM\", \"MEM(KB)\" "
+        "} "
+        "{ "
+        "printf \"%%-10s %%20s %%10.2f %%10.2f %%12d\\n\", $1, $2, $3, $4, $5 "
+        "}'", user);
+    system(command);
+}
+```  
+ps -u <user> akan menampilkan semua proses dari user tersebut.  
+-o pid=,comm=,%cpu=,%mem=,rss=: Menampilkan PID, nama proses, CPU dan memory dalam persen, serta rss (ukuran memory fisik dalam KB).  
+
+## b. Memasang mata-mata dalam mode daemon
+menjalankan:  
+./debugmon daemon <user>. 
+## C
+```bash
+void daemon_process(const char* user) {
+    pid_t pid = fork();
+    if (pid == 0) {
+        FILE* pidfile = fopen(PIDFILE, "w");
+        if (pidfile != NULL) {
+            fprintf(pidfile, "%d", getpid());
+            fclose(pidfile);
+        }
+
+        while (1) {
+            char command[256];
+            snprintf(command, sizeof(command), "ps -u %s -o comm=", user);
+            FILE* fp = popen(command, "r");
+            if (fp == NULL) {
+                perror("Error executing ps");
+                exit(1);
+            }
+
+            char cmd[256];
+            while (fgets(cmd, sizeof(cmd), fp)) {
+                cmd[strcspn(cmd, "\n")] = 0;
+                if (strlen(cmd) > 0) {
+                    log_entry(cmd, "RUNNING");
+                }
+            }
+
+            pclose(fp);
+            sleep(5);
+        }
+    } else if (pid > 0) {
+        printf("Debugmon is running in daemon mode for user '%s'.\n", user);
+    } else {
+        perror("Fork failed");
+    }
+}
+```
+Program menjalankan proses baru (daemon) dengan fork().  
+Setiap 5 detik, program memeriksa semua nama proses dari user dan mencatatnya ke debugmon.log sebagai RUNNING.  
+
+## c. Menghentikan Pengawasan  
+./debugmon stop <user>  
+```bash
+void stop_process(const char* user) {
+    FILE* pidfile = fopen(PIDFILE, "r");
+    if (pidfile == NULL) {
+        printf("No running Debugmon found for user '%s'.\n", user);
+        return;
+    }
+
+    int pid;
+    fscanf(pidfile, "%d", &pid);
+    fclose(pidfile);
+
+    if (kill(pid, SIGTERM) == 0) {
+        log_entry("debugmon_daemon", "RUNNING");
+        remove(PIDFILE);
+        printf("Debugmon daemon stopped for user '%s'.\n", user);
+    } else {
+        perror("Failed to stop Debugmon");
+    }
+}
+```
+Mencari PID dari file PID.  
+Mengirim SIGTERM untuk menghentikan daemon.  
+Menuliskan ke log bahwa pengawasan dihentikan.  
+
+## d. Menggagalkan semua proses user yang sedang berjalan  
+dengan mengetik:
+./debugmon fail <user>, Debugmon langsung menggagalkan semua proses yang sedang berjalan dan menulis status proses ke dalam file log dengan status FAILED.  
+```bash
+void fail_process(const char* user) {
+    FILE* pidfile = fopen(PIDFILE, "r");
+    if (pidfile != NULL) {
+        int pid;
+        fscanf(pidfile, "%d", &pid);
+        fclose(pidfile);
+        kill(pid, SIGTERM);
+        remove(PIDFILE);
+    }
+
+    char command[256];
+    snprintf(command, sizeof(command), "ps -u %s -o comm=", user);
+    FILE* fp = popen(command, "r");
+    if (fp) {
+        char proc[256];
+        while (fgets(proc, sizeof(proc), fp)) {
+            proc[strcspn(proc, "\n")] = 0;
+            if (strlen(proc) > 0) {
+                log_entry(proc, "FAILED");
+            }
+        }
+        pclose(fp);
+    }
+
+    char lock[256];
+    snprintf(lock, sizeof(lock), "sudo usermod -s /usr/sbin/nologin %s", user);
+    system(lock);
+
+    printf("User '%s' is now blocked from running processes.\n", user);
+}
+```
+Semua proses user diambil menggunakan ps.  
+Dicatat ke log dengan status FAILED.  
+Shell user diganti menjadi /usr/sbin/nologin sehingga user tidak bisa menjalankan proses.
+
+## e. Mengizinkan user untuk kembali menjalankan proses  
+./debugmon revert <user>  
+User bisa menjalankan proses lagi.  
+```bash
+void revert_process(const char* user) {
+    char cmd[256];
+    snprintf(cmd, sizeof(cmd), "sudo usermod -s /bin/bash %s", user);
+    system(cmd);
+    log_entry("user_revert", "RUNNING");
+    printf("User '%s' can now run processes again.\n", user);
+}
+```
+Mengembalikan shell user ke /bin/bash.  
+Menandakan user sudah bisa menjalankan proses kembali.  
+Dicatat ke log.
+
+## f. Mencatat ke dalam File Log  
+Format:  
+[dd:mm:yyyy]-[hh:mm:ss]_nama-process_STATUS(RUNNING/FAILED)  
+```bash
+void log_entry(const char* process_name, const char* status) {
+    FILE* log = fopen(LOGFILE, "a");
+    if (log == NULL) {
+        perror("Error opening log file");
+        return;
+    }
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    fprintf(log, "[%02d:%02d:%04d]-%02d:%02d:%02d_%s_%s\n",
+            tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900,
+            tm.tm_hour, tm.tm_min, tm.tm_sec,
+            process_name, status);
+    fclose(log);
+}
+```
+Fungsi log_entry() dipanggil di seluruh perintah penting (daemon, stop, fail, revert).  
+Format waktu dan proses sesuai dengan permintaan soal.
