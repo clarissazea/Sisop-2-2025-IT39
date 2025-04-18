@@ -711,6 +711,20 @@ void write_log(const char *msg) {
 Code ini difokuskan untuk mencatat log.  
 Format log sesuai dengan instruksi soal.  
 
+##Dokumentasi  
+![Image](https://github.com/user-attachments/assets/54470956-ff43-4be6-8f0b-6391be147ec9)
+![Image](https://github.com/user-attachments/assets/85eee659-b5d6-4435-859c-b65d72645152)
+![Image](https://github.com/user-attachments/assets/77775d95-e41a-4206-80fb-46345392341f)
+![Image](https://github.com/user-attachments/assets/ce487044-de0b-4016-abde-c8a16c22b532)
+![Image](https://github.com/user-attachments/assets/d6039dad-8003-49ab-9bbe-ea28cb565deb)
+![Image](https://github.com/user-attachments/assets/e0896513-81d4-434a-80a9-c7b1cd9e8d70)
+![Image](https://github.com/user-attachments/assets/f29b5e42-0759-4a31-9ea1-c413aabb68c9)
+![Image](https://github.com/user-attachments/assets/b0d7e045-4d74-4b57-ac93-a709663cca76)
+![Image](https://github.com/user-attachments/assets/fd4f7386-bebc-4d01-9367-b5918cc80441)
+![Image](https://github.com/user-attachments/assets/bc24eb1f-d652-47a9-81bd-fd2f06544960)
+![Image](https://github.com/user-attachments/assets/69e81427-60a5-495b-88de-a6d9b8beb5e2)
+![Image](https://github.com/user-attachments/assets/50272548-8af6-4105-a657-be3783e11fae)
+
 # Soal_3
 Dikerjakan oleh Muhammad Rafi' Adly (5027241082)  
 
