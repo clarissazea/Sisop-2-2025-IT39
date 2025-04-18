@@ -316,11 +316,11 @@ Penjelasan:
 Selain itu, tampilkan panduan penggunaan.
 
 ### e. Password Check
-Output dari proses Decode = `BewareOfAmpy`
+- Output dari proses Decode = `BewareOfAmpy`
 ![image](https://github.com/user-attachments/assets/f5717fc7-01f2-4578-988f-d62929203df9)
 
 
-Kemudian masukkan ke web checker:
+- Kemudian masukkan ke web checker:
 
 ![Screenshot 2025-04-11 001813](https://github.com/user-attachments/assets/ff6830b4-3950-4301-9b33-4a0afb6b2265)
 
