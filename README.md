@@ -21,7 +21,7 @@ Sementara file Clues.zip berisi beberapa folder (ClueA–ClueD) yang masing-masi
 ## Cara Pengerjaan  
 
 a. Downloading the Clues
-Unduh file ZIP yang bernama `Clues.zip` di URL (https://drive.google.com/file/d/1xFn1OBJUuSdnApDseEczKhtNzyGekauK/view). kemudian mengekstrak `Clues.zip` menggunakan perintah unzip, dan menghapus file `Clues.zip` setelah ekstraksi berhasil.
+Unduh file ZIP yang bernama `Clues.zip` di URL `https://drive.google.com/file/d/1xFn1OBJUuSdnApDseEczKhtNzyGekauK/view`. kemudian mengekstrak `Clues.zip` menggunakan perintah unzip, dan menghapus file `Clues.zip` setelah ekstraksi berhasil.
 
 ```bash
 void download_and_unzip() {
