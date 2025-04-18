@@ -20,7 +20,7 @@ Sementara file Clues.zip berisi beberapa folder (ClueA–ClueD) yang masing-masi
 
 ## Cara Pengerjaan  
 
-a. Downloading the Clues
+### a. Downloading the Clues
 Mengunduh file `Clues.zip` dari URL, lalu mengekstraknya menjadi folder `Clues/`. Jika folder `Clues/` sudah ada, proses download dilewati.
 
 Fungsi terkait:
