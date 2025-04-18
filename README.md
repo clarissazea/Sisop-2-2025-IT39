@@ -517,6 +517,28 @@ void run_daemon() {
     }
 }
 
+
+int main() [
+ else if (strcmp(argv[1], "--decrypt") == 0) {
+        decrypt_files();
+        run_daemon();
+} else if (strcmp(argv[1], "--quarantine") == 0) {
+        decrypt_files();
+        run_daemon();
+        move_to_quarantine();
+    } else if (strcmp(argv[1], "--return") == 0) {
+        return_from_quarantine();
+    }
+}
+```  
+Pada kode ini,  
+1. Proses dijalankan sebagai daemon dan setiap 10 detik mendecrypt nama file dalam folder starter_kit.  
+2. Dekripsi menggunakan fungsi decode_base64().  
+3. PID disimpan ke decryption.pid.  
+
+### c. karantine & return file  
+## C
+```bash
 void move_to_quarantine() {
     DIR *dir = opendir(STARTER_KIT_MARK);
     if (!dir) return;
@@ -559,11 +581,8 @@ void return_from_quarantine() {
     closedir(dir);
 }
 
-int main() [
- else if (strcmp(argv[1], "--decrypt") == 0) {
-        decrypt_files();
-        run_daemon();
-} else if (strcmp(argv[1], "--quarantine") == 0) {
+int main(){
+else if (strcmp(argv[1], "--quarantine") == 0) {
         decrypt_files();
         run_daemon();
         move_to_quarantine();
@@ -571,16 +590,6 @@ int main() [
         return_from_quarantine();
     }
 }
-```  
-Pada kode ini,  
-1. Proses dijalankan sebagai daemon dan setiap 10 detik mendecrypt nama file dalam folder starter_kit.  
-2. Dekripsi menggunakan fungsi decode_base64().  
-3. PID disimpan ke decryption.pid.  
-
-### c. karantine & return file  
-## C
-```bash
-
 ```
 Fungsi move_to_quarantine() memindahkan semua file dari starter_kit ke folder quarantine.  
 Fungsi return_from_quarantine() melakukan hal sebaliknya.  
