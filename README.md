@@ -24,8 +24,8 @@ Sementara file Clues.zip berisi beberapa folder (ClueA–ClueD) yang masing-masi
 Mengunduh file `Clues.zip` dari URL, lalu mengekstraknya menjadi folder `Clues/`. Jika folder `Clues/` sudah ada, proses download dilewati.
 
 Fungsi terkait:
-- run_command()
-- download_and_unzip()
+1. run_command()
+2. download_and_unzip()
 
 ```bash
 int run_command(const char *cmd, char *const argv[]) {
@@ -86,8 +86,8 @@ Penjelasan:
 Memfilter file-file dalam folder `Clues/` agar hanya file dengan nama satu karakter alfanumerik (a.txt, 5.txt, dll) yang dipindahkan ke folder `Filtered/`, sedangkan file lain dihapus.
 
 Fungsi terkait:
-- is_valid_file()
-- filter_files()
+1. is_valid_file()
+2. filter_files()
 
 ```bash
 int is_valid_file(const char *filename) {
@@ -140,8 +140,8 @@ Penjelasan:
 Menggabungkan isi file di folder Filtered/ ke dalam satu file Combined.txt dengan urutan angka → huruf → angka → huruf secara bergantian.
 
 Fungsi terkait:
-- cmp()
-- combine_files()
+1. cmp()
+2. combine_files()
 
 ```bash
 int cmp(const void *a, const void *b) {
@@ -220,8 +220,94 @@ Penjelasan:
 - Menggabungkan isi file angka lalu huruf secara bergantian ke `Combined.txt`.
 - Setelah isi file digabungkan, file aslinya dihapus.
 
+### d. Decode the file
+Mendekripsi isi Combined.txt menggunakan metode ROT13 dan menyimpan hasilnya di `Decoded.txt`.
 
+Fungsi terakit:
+rot13_decode()
 
+```bash
+void rot13_decode() {
+    FILE *in = fopen("Combined.txt", "r");
+    FILE *out = fopen("Decoded.txt", "w");
+    if (!in || !out) {
+        perror("Gagal membuka Combined.txt atau membuat Decoded.txt");
+        return;
+    }
+
+    int c;
+    while ((c = fgetc(in)) != EOF) {
+        if (isalpha(c)) {
+            if ((c >= 'a' && c <= 'm') || (c >= 'A' && c <= 'M'))
+                c += 13;
+            else
+                c -= 13;
+        }
+        fputc(c, out);
+    }
+
+    fclose(in);
+    fclose(out);
+    printf("Decode ROT13 selesai. Output disimpan di Decoded.txt\n");
+}
+```
+Penjelasan:
+- Membuka Combined.txt
+- Membaca satu karakter per satu karakter
+- Jika huruf, digeser 13 huruf di alfabet (a-z, A-Z)
+- Output hasil dekripsi ditulis ke `Decoded.txt`
+
+### Main Function
+Mengatur jalannya program berdasarkan argumen yang diberikan saat eksekusi.
+
+Fungsi terkait:
+1. main()
+2. print_usage()
+
+```bash
+int main(int argc, char *argv[]) {
+    if (argc == 1) {
+        download_and_unzip();
+    } else if (argc == 3 && strcmp(argv[1], "-m") == 0) {
+        if (strcmp(argv[2], "Filter") == 0) {
+            filter_files();
+        } else if (strcmp(argv[2], "Combine") == 0) {
+            combine_files();
+        } else if (strcmp(argv[2], "Decode") == 0) {
+            rot13_decode();
+        } else {
+            print_usage();
+        }
+    } else {
+        print_usage();
+    }
+
+    return 0;
+}
+```
+
+```bash
+void print_usage() {
+    printf("Penggunaan:\n");
+    printf("  ./action            # Download & extract Clues.zip\n");
+    printf("  ./action -m Filter  # Filter file valid ke folder Filtered\n");
+    printf("  ./action -m Combine # Gabungkan isi file ke Combined.txt\n");
+    printf("  ./action -m Decode  # Decode Combined.txt ke Decoded.txt\n");
+}
+```
+Penjelasan:
+
+- Tanpa argumen → download dan ekstraksi.
+- Dengan -m + mode:
+- Filter → filtering file,
+- Combine → gabung file,
+- Decode → dekripsi file.
+Selain itu, tampilkan panduan penggunaan.
+
+### e. Password Check
+Output dari proses Decode = BewareOfAmpy. Kemudian masukkan ke web checker
+
+![Screenshot 2025-04-11 001813](https://github.com/user-attachments/assets/ff6830b4-3950-4301-9b33-4a0afb6b2265)
 
 # Soal_2 
 Dikerjakan oleh Ahmad Wildan Fawwaz (5027241001)  
