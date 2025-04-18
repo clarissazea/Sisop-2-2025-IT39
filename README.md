@@ -324,6 +324,7 @@ Selain itu, tampilkan panduan penggunaan.
 
 ![Screenshot 2025-04-11 001813](https://github.com/user-attachments/assets/ff6830b4-3950-4301-9b33-4a0afb6b2265)
 
+
 # Soal_2 
 Dikerjakan oleh Ahmad Wildan Fawwaz (5027241001)  
 Pengerjaan soal ini menggunakan 1 file script starterkit.c dan 1 file starter_kit.zip  
@@ -421,6 +422,11 @@ if (argc == 1) {
 }
 ]
 ```
+Pada kode tersebut intinya adalah,  
+1. File starter_kit.zip diunduh dari Google Drive.  
+2. File di-unzip ke dalam folder starter_kit.  
+3. File ZIP asli dihapus setelah unzip.  
+
 b. Decrypt Nama File Base64 ke Asli (Daemon Process)  
 ## C
 ```bash
@@ -565,7 +571,12 @@ int main() [
         return_from_quarantine();
     }
 }
-```
+```  
+Pada kode ini,  
+1. Proses dijalankan sebagai daemon dan setiap 10 detik mendecrypt nama file dalam folder starter_kit.  
+2. Dekripsi menggunakan fungsi decode_base64().  
+3. PID disimpan ke decryption.pid.
+
 d. Hapus File dalam Karantina (Eradicate)  
 ## C
 ```bash
@@ -593,7 +604,10 @@ int main(){
  else if (strcmp(argv[1], "--eradicate") == 0) {
         erase_quarantine(); 
 }
-```
+```  
+Kode ini berisi Fungsi rename() digunakan untuk memindahkan file antar folder.  
+Log ditulis ke activity.log.
+
 e. Shutdown Daemon berdasarkan PID
 ## C
 ```bash
@@ -621,7 +635,11 @@ int main(){
 else if (strcmp(argv[1], "--shutdown") == 0) {
         shutdown_daemon();
 }
-```
+```  
+PID dibaca dari file.  
+Proses dihentikan dengan kill().  
+Log ditulis sesuai format.  
+
 f. Error Handling Sederhana  
 ## C
 ```bash
@@ -650,7 +668,9 @@ if (argc == 1) {
         remove(ZIP_FILE);
     }
 }
-```
+```  
+Pesan kesalahan ditampilkan jika pengguna salah mengetikkan argumen.  
+
 g. Logging ke activity.log  
 ## C
 ```bash
@@ -667,7 +687,10 @@ void write_log(const char *msg) {
 
     fclose(f);
 }
-```
+```  
+Code ini difokuskan untuk mencatat log.  
+Format log sesuai dengan instruksi soal.  
+
 # Soal_3
 Dikerjakan oleh Muhammad Rafi' Adly (5027241082)  
 
