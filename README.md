@@ -575,7 +575,18 @@ int main() [
 Pada kode ini,  
 1. Proses dijalankan sebagai daemon dan setiap 10 detik mendecrypt nama file dalam folder starter_kit.  
 2. Dekripsi menggunakan fungsi decode_base64().  
-3. PID disimpan ke decryption.pid.
+3. PID disimpan ke decryption.pid.  
+
+### c. karantine & return file  
+## C
+```bash
+
+```
+Fungsi move_to_quarantine() memindahkan semua file dari starter_kit ke folder quarantine.  
+Fungsi return_from_quarantine() melakukan hal sebaliknya.  
+Di main(), keduanya dipanggil dengan argumen:  
+--quarantine  
+--return
 
 ### d. Hapus File dalam Karantina (Eradicate)  
 ## C
