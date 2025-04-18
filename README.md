@@ -26,6 +26,28 @@ Mengunduh file `Clues.zip` dari URL, lalu mengekstraknya menjadi folder `Clues/`
 Fungsi terkait:
 - run_command()
 - download_and_unzip()
+
+```bash
+int run_command(const char *cmd, char *const argv[]) {
+    pid_t pid = fork();
+    if (pid == 0) {
+        execvp(cmd, argv);
+        perror("exec failed");
+        exit(EXIT_FAILURE);
+    } else if (pid > 0) {
+        int status;
+        waitpid(pid, &status, 0);
+        return WIFEXITED(status) && WEXITSTATUS(status) == 0;
+    } else {
+        perror("fork failed");
+        return 0;
+    }
+}
+```
+Penjelasan:
+- Membuat proses baru (fork())
+- Anak proses menjalankan perintah (execvp()), misalnya wget atau unzip
+- Proses induk menunggu anak selesai dan memeriksa apakah berhasil.
   
 ```bash
 void download_and_unzip() {
@@ -35,17 +57,168 @@ void download_and_unzip() {
         printf("Folder Clues sudah ada. Lewati download.\n");
         return;
     }
-    char *wget_args[] = {"wget", "-q", "-O", ZIP_FILE, ZIP_URL, NULL};
-    run_command("wget", wget_args);
 
-    char *unzip_args[] = {"unzip", "-q", ZIP_FILE, NULL};
-    run_command("unzip", unzip_args);
+    printf("Mengunduh Clues.zip...\n");
+    char *wget_args[] = {"wget", "-q", "-O", "Clues.zip", "https://drive.google.com/uc?export=download&id=1xFn1OBJUuSdnApDseEczKhtNzyGekauK", NULL};
+    if (!run_command("wget", wget_args)) {
+        fprintf(stderr, "Gagal mengunduh Clues.zip\n");
+        return;
+    }
 
-    remove(ZIP_FILE);
+    printf("Ekstrak Clues.zip...\n");
+    char *unzip_args[] = {"unzip", "-q", "Clues.zip", NULL};
+    if (!run_command("unzip", unzip_args)) {
+        fprintf(stderr, "Gagal mengekstrak Clues.zip\n");
+        return;
+    }
+
+    remove("Clues.zip");
     printf("Download dan ekstrak selesai.\n");
 }
 ```
+Penjelasan:
+- Mengecek apakah folder `Clues/` sudah ada.
+- Jika belum ada, file `Clues.zip` diunduh menggunakan wget.
+- File `Clues.zip` diekstrak menggunakan unzip.
+- Setelah ekstraksi, file zip dihapus.
 
+### b. Filtering the Files
+Memfilter file-file dalam folder `Clues/` agar hanya file dengan nama satu karakter alfanumerik (a.txt, 5.txt, dll) yang dipindahkan ke folder `Filtered/`, sedangkan file lain dihapus.
+
+Fungsi terkait:
+- is_valid_file()
+- filter_files()
+
+```bash
+int is_valid_file(const char *filename) {
+    return strlen(filename) == 5 && isalnum(filename[0]) && strcmp(filename + 1, ".txt") == 0;
+}
+```
+Penjelasan:
+- Cek panjang nama file (1 karakter + .txt = 5).
+- Karakter pertama harus alfanumerik (huruf/angka).
+- Ekstensi harus .txt.
+
+```bash
+void filter_files() {
+    DIR *dir;
+    struct dirent *entry;
+
+    mkdir("Filtered", 0755);
+
+    const char *subdirs[] = {"Clues/ClueA", "Clues/ClueB", "Clues/ClueC", "Clues/ClueD"};
+
+    for (int i = 0; i < 4; ++i) {
+        dir = opendir(subdirs[i]);
+        if (!dir) continue;
+
+        char path[256];
+        while ((entry = readdir(dir))) {
+            if (is_valid_file(entry->d_name)) {
+                snprintf(path, sizeof(path), "%s/%s", subdirs[i], entry->d_name);
+                char dest[256];
+                snprintf(dest, sizeof(dest), "Filtered/%s", entry->d_name);
+                rename(path, dest);
+            } else if (entry->d_type == DT_REG) {
+                snprintf(path, sizeof(path), "%s/%s", subdirs[i], entry->d_name);
+                remove(path);
+            }
+        }
+        closedir(dir);
+    }
+
+    printf("Filtering selesai. File disimpan di folder Filtered.\n");
+}
+```
+Penjelasan:
+- Membuat folder Filtered/.
+- MembUka setiap subfolder (ClueA, ClueB, ClueC, ClueD).
+- File yang valid dipindahkan ke `Filtered/`.
+- Sedankan file yang tidak valid dihapus.
+
+### c. Combine the File Content
+Menggabungkan isi file di folder Filtered/ ke dalam satu file Combined.txt dengan urutan angka → huruf → angka → huruf secara bergantian.
+
+Fungsi terkait:
+- cmp()
+- combine_files()
+
+```bash
+int cmp(const void *a, const void *b) {
+    return strcmp(*(const char **)a, *(const char **)b);
+}
+```
+Penjelasan:
+- Fungsi pembanding untuk mengurutkan nama file secara alfabetik
+
+```bash
+void combine_files() {
+    DIR *dir = opendir("Filtered");
+    struct dirent *entry;
+    char *numbers[100], *letters[100];
+    int n_count = 0, l_count = 0;
+
+    if (!dir) {
+        fprintf(stderr, "Folder Filtered tidak ditemukan.\n");
+        return;
+    }
+
+    while ((entry = readdir(dir))) {
+        if (is_valid_file(entry->d_name)) {
+            if (isdigit(entry->d_name[0]))
+                numbers[n_count++] = strdup(entry->d_name);
+            else if (isalpha(entry->d_name[0]))
+                letters[l_count++] = strdup(entry->d_name);
+        }
+    }
+    closedir(dir);
+
+    qsort(numbers, n_count, sizeof(char *), cmp);
+    qsort(letters, l_count, sizeof(char *), cmp);
+
+    FILE *out = fopen("Combined.txt", "w");
+    if (!out) {
+        perror("Gagal membuat Combined.txt");
+        return;
+    }
+
+    int ni = 0, li = 0;
+    while (ni < n_count || li < l_count) {
+        if (ni < n_count) {
+            char path[256];
+            snprintf(path, sizeof(path), "Filtered/%s", numbers[ni++]);
+            FILE *f = fopen(path, "r");
+            if (f) {
+                int c;
+                while ((c = fgetc(f)) != EOF) fputc(c, out);
+                fclose(f);
+            }
+            remove(path);
+        }
+        if (li < l_count) {
+            char path[256];
+            snprintf(path, sizeof(path), "Filtered/%s", letters[li++]);
+            FILE *f = fopen(path, "r");
+            if (f) {
+                int c;
+                while ((c = fgetc(f)) != EOF) fputc(c, out);
+                fclose(f);
+            }
+            remove(path);
+        }
+    }
+
+    fclose(out);
+    printf("Isi file telah digabung ke Combined.txt\n");
+
+    for (int i = 0; i < n_count; i++) free(numbers[i]);
+    for (int i = 0; i < l_count; i++) free(letters[i]);
+}
+```
+Penjelasan:
+- File dengan nama angka dan huruf dikumpulkan dan diurutkan.
+- Menggabungkan isi file angka lalu huruf secara bergantian ke `Combined.txt`.
+- Setelah isi file digabungkan, file aslinya dihapus.
 
 
 
