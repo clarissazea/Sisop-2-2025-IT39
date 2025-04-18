@@ -725,6 +725,11 @@ Format log sesuai dengan instruksi soal.
 ![Image](https://github.com/user-attachments/assets/69e81427-60a5-495b-88de-a6d9b8beb5e2)
 ![Image](https://github.com/user-attachments/assets/50272548-8af6-4105-a657-be3783e11fae)
 
+## Revisi
+Update code untuk penambahan fitur dapat menggunakan argumen bebas yang otomatis bisa mendownload file zip.  
+Update code untuk penambahan fitur saat ./starterkit --quarantine langsung tanpa melalui --decrypt, maka nama file akan terdekripsi secara otomatis di dalam folder quarantine.  
+
+
 # Soal_3
 Dikerjakan oleh Muhammad Rafi' Adly (5027241082)  
 
