@@ -142,6 +142,47 @@ Dikerjakan oleh Muhammad Rafi' Adly (5027241082)
 
 ## Cara Pengerjaan  
 
+Membuat fungsi agar file bekerja secara daemon
+```bash
+void daemon() {
+  pid_t pid, sid;        // Variabel untuk menyimpan PID
+  pid = fork();     // Menyimpan PID dari Child Process
+
+  /* Keluar saat fork gagal
+  * (nilai variabel pid < 0) */
+  if (pid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  /* Keluar saat fork berhasil
+  * (nilai variabel pid adalah PID dari child process) */
+  if (pid > 0) {
+    exit(EXIT_SUCCESS);
+  }
+
+  umask(0);
+
+  sid = setsid();
+  if (sid < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  if ((chdir("/")) < 0) {
+    exit(EXIT_FAILURE);
+  }
+
+  close(STDIN_FILENO);
+  close(STDOUT_FILENO);
+  close(STDERR_FILENO);
+}
+```
+## a. Menyamarkan proses menjadi /init
+```bash
+strncpy(argv[0], "/init", strlen(argv[0]));
+```
+
+## Revisi
+
 
 # Soal_4
 Dikerjakan oleh Ahmad Wildan Fawwaz (5027241001)  
