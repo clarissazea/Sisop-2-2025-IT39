@@ -961,3 +961,21 @@ void log_entry(const char* process_name, const char* status) {
 ```
 Fungsi log_entry() dipanggil di seluruh perintah penting (daemon, stop, fail, revert).  
 Format waktu dan proses sesuai dengan permintaan soal.
+
+## Dokumentasi
+![Image](https://github.com/user-attachments/assets/af31e5e7-ac0b-4ecf-8803-015bf72b3aa8)
+
+![Image](https://github.com/user-attachments/assets/8e3062a3-e331-41b3-bbef-68c4bf6b8d72)
+
+![Image](https://github.com/user-attachments/assets/990ba853-8f34-4e50-8e8a-37707788ae86)
+
+![Image](https://github.com/user-attachments/assets/6607aec3-d284-41c2-85e2-677b7e844839)
+
+![Image](https://github.com/user-attachments/assets/a08b27d2-fb14-496f-9166-ea76c88f7202)
+
+![Image](https://github.com/user-attachments/assets/59b74649-f77d-4957-8341-297aabbe6055)
+
+![Image](https://github.com/user-attachments/assets/3e6c8de7-6beb-4524-a893-526085ee84dc)
+
+## Revisi
+Pada bagian fail user sudah diblokir, namun saat direvert-user masih bisa merevert diri sendiri. Sehingga masih ada kurang benar pada fiturnya.
